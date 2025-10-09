@@ -25,9 +25,9 @@ function toneToFreq(tone: number) {
 
 function toneToTonename(tone: number) {
     tone = Math.round(tone);
-    const octove = Math.floor((tone + 9) / 12);
+    const octave = Math.floor((tone + 9) / 12);
     const toneName = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"][tone % 12]
-    return toneName + octove;
+    return toneName + octave;
 }
 
 export function tonalAnalyze(result: AnalyseResult) {

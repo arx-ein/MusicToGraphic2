@@ -33,9 +33,9 @@ export class MultiAnalyseResult {
 export class MultiAnalyser {
     analysers: SingleAnalyser[];
 
-    constructor(buffer: Float32Array<ArrayBuffer>, sampleRate: number, numOctoves: number) {
+    constructor(buffer: Float32Array<ArrayBuffer>, sampleRate: number, numOctaves: number) {
         this.analysers = [];
-        for (let i = 0; i < numOctoves; i++) {
+        for (let i = 0; i < numOctaves; i++) {
             this.analysers[i] = new SingleAnalyser(buffer, sampleRate);
 
             // bufferを半分にダウンサンプリング
@@ -47,7 +47,7 @@ export class MultiAnalyser {
 
     // 与えられた時刻前後について、FFT解析を行い、解析結果を返す
     analyseAt(ms: number, sampleSize: number): MultiAnalyseResult {
-        // 各アナライザーを順次起動してOctoveAnalyseResultnに結果をまとめる
+        // 各アナライザーを順次起動してOctaveAnalyseResultnに結果をまとめる
         return new MultiAnalyseResult(this.analysers.map(analyser => analyser.analyseAt(ms, sampleSize)));
     }
 }

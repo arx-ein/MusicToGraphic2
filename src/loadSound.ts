@@ -4,7 +4,7 @@ import { MultiAnalyser } from "./multiAnalyszer";
 export let audioBuffer: AudioBuffer | null = null;
 export let channelData: Float32Array<ArrayBuffer> | null = null;
 export let singleAnalyser: SingleAnalyser | null = null;
-export let octoveAnalyzer: MultiAnalyser | null = null;
+export let octaveAnalyzer: MultiAnalyser | null = null;
 
 let playStartTime = 0;
 export function getPlayTime() { return performance.now() - playStartTime; }
@@ -23,7 +23,7 @@ document.getElementById("file")?.addEventListener("change", async (e) => {
         audioBuffer = await audioContext.decodeAudioData(fileReader.result as ArrayBuffer);
         channelData = audioBuffer.getChannelData(0);
         singleAnalyser = new SingleAnalyser(channelData, audioBuffer.sampleRate);
-        octoveAnalyzer = new MultiAnalyser(channelData, audioBuffer.sampleRate, 8);
+        octaveAnalyzer = new MultiAnalyser(channelData, audioBuffer.sampleRate, 8);
 
         // オーディオコンテクストを構成して再生
         const source = audioContext.createBufferSource();
@@ -37,7 +37,7 @@ document.getElementById("file")?.addEventListener("change", async (e) => {
 
         source.addEventListener("ended", () => {
             singleAnalyser = null;
-            octoveAnalyzer = null;
+            octaveAnalyzer = null;
             channelData = null;
         })
     };
