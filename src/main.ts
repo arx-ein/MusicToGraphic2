@@ -3,10 +3,6 @@ import { audioBuffer, getPlayTime, octaveAnalyzer, singleAnalyser } from "./load
 import { drawSpectrumGrayscale, drawTonalGrayscale, drawTransition } from "./render";
 declare const p5: typeof p5_; // 外部で値としてのp5が実装されていることを宣言
 
-
-let x = 100;
-let y = 100;
-
 // p5のインスタンスモードで書く
 const sketch = (p5: p5_) => {
   p5.setup = () => {
@@ -23,11 +19,17 @@ const sketch = (p5: p5_) => {
 
     const result2 = octaveAnalyzer.analyseAt(getPlayTime() + 250, 256);
 
-    p5.background(0);
+    // p5.background(0);
+    p5.push();
+    p5.fill(31);
+    p5.rect(0, 780, 1920, 300);
+    p5.pop();
     drawTransition(p5, result, result2);
 
     drawTonalGrayscale(p5, 10, result);
-    drawSpectrumGrayscale(p5, x, result);
+    const audioMSec = audioBuffer.duration * 1000;
+    const audioNow = getPlayTime() / audioMSec;
+    drawSpectrumGrayscale(p5, 100 + audioNow * 1720, result);
     // result.results.forEach(r => drawSpectrumColor(p5, x, r));
     // drawSpectrumColor(p5, x, result.results[4]);
   };
