@@ -5,6 +5,7 @@ export let audioBuffer: AudioBuffer | null = null;
 export let channelData: Float32Array<ArrayBuffer> | null = null;
 export let singleAnalyser: SingleAnalyser | null = null;
 export let octaveAnalyzer: MultiAnalyser | null = null;
+export let audioDestination: MediaStreamAudioDestinationNode | null = null;
 
 let playStartTime = 0;
 export function getPlayTime() { return performance.now() - playStartTime; }
@@ -15,10 +16,12 @@ document.getElementById("file")?.addEventListener("change", async (e) => {
 
     const file = input.files[0];
     const audioContext = new AudioContext();
+    audioDestination = audioContext.createMediaStreamDestination();
     const fileReader = new FileReader();
 
     fileReader.readAsArrayBuffer(file);
     fileReader.onload = async () => {
+        if (!audioDestination) return;
         // 事前解析器の準備
         audioBuffer = await audioContext.decodeAudioData(fileReader.result as ArrayBuffer);
         channelData = audioBuffer.getChannelData(0);
@@ -31,7 +34,8 @@ document.getElementById("file")?.addEventListener("change", async (e) => {
 
         source.buffer = audioBuffer;
         source.connect(gainNode);
-        gainNode.connect(audioContext.destination)
+        gainNode.connect(audioContext.destination); // For listening
+        gainNode.connect(audioDestination); // For recording
         source.start();
         playStartTime = performance.now();
 

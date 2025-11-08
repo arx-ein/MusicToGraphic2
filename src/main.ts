@@ -1,12 +1,14 @@
 import type p5_ from "p5"; // インスタンスの型名はp5だと↓と被るのでズラす
 import { audioBuffer, getPlayTime, octaveAnalyzer, singleAnalyser } from "./loadSound";
 import { drawSpectrumGrayscale, drawTonalGrayscale, drawTransition } from "./render";
+import "./record";
 declare const p5: typeof p5_; // 外部で値としてのp5が実装されていることを宣言
 
 // p5のインスタンスモードで書く
 const sketch = (p5: p5_) => {
   p5.setup = () => {
-    p5.createCanvas(1920, 1080);
+    const canvas = document.getElementsByTagName("canvas")[0];
+    p5.createCanvas(1920, 1080, canvas);
     p5.background(0, 0, 0);
     p5.frameRate(60);
   };
